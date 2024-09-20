@@ -1,4 +1,4 @@
-package entity;
+package com.farnamhs.blogging.entity;
 
 import com.farnamhs.blogging.entity.Post;
 import org.junit.jupiter.api.Test;
