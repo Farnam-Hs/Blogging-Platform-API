@@ -63,6 +63,23 @@ public class Post {
         return updatedAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(title, post.title)
+                && Objects.equals(content, post.content)
+                && Objects.equals(category, post.category)
+                && Objects.equals(tags, post.tags)
+                && Objects.equals(createdAt, post.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, content, category, tags, createdAt);
+    }
+
     private String validateTitle(String title) {
         return validateString(title, "Title");
     }
