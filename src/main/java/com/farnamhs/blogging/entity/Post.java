@@ -72,12 +72,13 @@ public class Post {
                 && Objects.equals(content, post.content)
                 && Objects.equals(category, post.category)
                 && Objects.equals(tags, post.tags)
-                && Objects.equals(createdAt, post.createdAt);
+                && Objects.equals(createdAt, post.createdAt)
+                && Objects.equals(updatedAt, post.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, content, category, tags, createdAt);
+        return Objects.hash(title, content, category, tags, createdAt, updatedAt);
     }
 
     private String validateTitle(String title) {

@@ -1,6 +1,5 @@
 package com.farnamhs.blogging.entity;
 
-import com.farnamhs.blogging.entity.Post;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -235,6 +234,16 @@ public class PostTest {
         post.setId(1);
 
         assertEquals(1, post.getId());
+    }
+
+    @Test
+    void two_posts_should_be_equal_by_all_their_stats_except_their_ids() {
+        Post firstPost = new Post("Title" , "Content", "Category", emptyList(), getSampleDateTime());
+        firstPost.setId(5);
+        Post secondPost = new Post("Title" , "Content", "Category", emptyList(), getSampleDateTime());
+        secondPost.setId(12);
+
+        assertEquals(firstPost, secondPost);
     }
 
     @Test
