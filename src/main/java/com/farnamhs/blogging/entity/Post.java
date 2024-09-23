@@ -1,7 +1,7 @@
 package com.farnamhs.blogging.entity;
 
+import java.time.Instant;
 import java.util.List;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -14,14 +14,14 @@ public class Post {
     private final String content;
     private final String category;
     private final List<String> tags;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private final Instant createdAt;
+    private final Instant updatedAt;
 
-    public Post(String title, String content, String category, List<String> tags, LocalDateTime createdAt) {
+    public Post(String title, String content, String category, List<String> tags, Instant createdAt) {
         this(title, content, category, tags, createdAt, createdAt);
     }
 
-    public Post(String title, String content, String category, List<String> tags, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Post(String title, String content, String category, List<String> tags, Instant createdAt, Instant updatedAt) {
         this.title = validateTitle(title);
         this.content = validateContent(content);
         this.category = validateCategory(category);
@@ -55,11 +55,11 @@ public class Post {
         return tags;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
