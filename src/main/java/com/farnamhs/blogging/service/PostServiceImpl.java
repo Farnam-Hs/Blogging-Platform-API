@@ -39,10 +39,7 @@ public class PostServiceImpl implements PostService {
         validatePostRequest(postRequestDto);
 
         final Post existedPost = fetchPostFromDao(id);
-        final Post updatedPost = toEntity(postRequestDto, existedPost, now(clock));
-        final boolean isUpdated = postDao.update(updatedPost);
-
-        validateAction(isUpdated);
+        final Post updatedPost = postDao.update(toEntity(postRequestDto, existedPost, now(clock)));
 
         return toDto(updatedPost);
     }

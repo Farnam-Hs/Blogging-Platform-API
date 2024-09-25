@@ -107,40 +107,6 @@ public class PostServiceImplTest {
     }
 
     @Test
-    void should_throw_exception_if_the_post_exists_but_removed_in_the_process_of_updating_and_does_not_exist_to_update() {
-        PostRequestDto requestedPost = new PostRequestDto(
-                "My Updated Blog Post",
-                "This is the updated content of my first blog post.",
-                "Technology",
-                List.of("Tech", "Programming")
-        );
-        Post existedPost = new Post(
-                "My First Blog Post",
-                "This is the content of my first blog post.",
-                "Technology",
-                List.of("Tech", "Programming"),
-                Instant.now(fixedClock)
-        );
-        existedPost.setId(1);
-        Post updatedPost = new Post(
-                requestedPost.title(),
-                requestedPost.content(),
-                requestedPost.category(),
-                requestedPost.tags(),
-                existedPost.getCreatedAt(),
-                Instant.now(fixedClock)
-        );
-        updatedPost.setId(existedPost.getId());
-
-        when(postDao.findById(1)).thenReturn(Optional.of(existedPost));
-        when(postDao.update(updatedPost)).thenReturn(false);
-
-        assertThrows(PostNotFoundException.class, () -> postServiceImpl.updatePost(1, requestedPost));
-        verify(postDao).findById(1);
-        verify(postDao).update(updatedPost);
-    }
-
-    @Test
     void must_update_an_existed_post_from_requested_post_and_return_as_a_response_post() {
         PostRequestDto requestedPost = new PostRequestDto(
                 "My Updated Blog Post",
@@ -176,7 +142,7 @@ public class PostServiceImplTest {
         );
 
         when(postDao.findById(1)).thenReturn(Optional.of(existedPost));
-        when(postDao.update(updatedPost)).thenReturn(true);
+        when(postDao.update(updatedPost)).thenReturn(updatedPost);
         PostResponseDto actualResponsePost = postServiceImpl.updatePost(1, requestedPost);
 
         assertEquals(expectedResponsePost, actualResponsePost);
