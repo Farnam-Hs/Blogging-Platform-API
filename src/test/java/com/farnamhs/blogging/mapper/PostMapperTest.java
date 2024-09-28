@@ -50,14 +50,16 @@ public class PostMapperTest {
                 List.of("Programming", "Testing")
         );
         Post originalPost = new Post(
+                1,
                 "Title",
                 "Content",
                 "Category",
                 List.of("Java", "Testing"),
+                now.minusSeconds(6000),
                 now.minusSeconds(6000)
         );
-        originalPost.setId(1);
         Post expectedPost = new Post(
+                originalPost.getId(),
                 postRequestDto.title(),
                 postRequestDto.content(),
                 postRequestDto.category(),
@@ -65,7 +67,6 @@ public class PostMapperTest {
                 originalPost.getCreatedAt(),
                 now
         );
-        expectedPost.setId(originalPost.getId());
 
         Post actualPost = PostMapper.toEntity(postRequestDto, originalPost, now);
 
@@ -76,13 +77,14 @@ public class PostMapperTest {
     @Test
     void should_be_able_to_map_a_post_to_response_dto() {
         Post post = new Post(
+                1,
                 "Title",
                 "Content",
                 "Category",
                 List.of("Java", "Testing"),
+                now.minusSeconds(6000),
                 now
         );
-        post.setId(1);
         PostResponseDto expectedResponsePost = new PostResponseDto(
                 post.getId(),
                 post.getTitle(),

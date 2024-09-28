@@ -19,10 +19,17 @@ public class PostTest {
     }
 
     @Test
+    void post_id_should_be_an_unsaved_id_if_using_first_constructor_to_instantiate() {
+        Post post = new Post("Title", "Content", "Category", emptyList(), getFixedInstant());
+
+        assertEquals(post.getId(), Post.UNSAVED_ID);
+    }
+
+    @Test
     void should_prevent_if_title_is_null() {
         assertThrows(
                 NullPointerException.class,
-                () -> new Post(null, "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post(null, "Content", "Category", emptyList(), getFixedInstant())
         );
     }
 
@@ -30,7 +37,7 @@ public class PostTest {
     void should_prevent_if_title_is_empty() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("", "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("", "Content", "Category", emptyList(), getFixedInstant())
         );
     }
 
@@ -38,13 +45,13 @@ public class PostTest {
     void should_prevent_if_title_is_blank() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("  ", "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("  ", "Content", "Category", emptyList(), getFixedInstant())
         );
     }
 
     @Test
     void should_trim_the_title() {
-        Post post = new Post("  Title  ", "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant());
+        Post post = new Post("  Title  ", "Content", "Category", emptyList(), getFixedInstant());
 
         assertEquals("Title", post.getTitle());
     }
@@ -53,7 +60,7 @@ public class PostTest {
     void should_prevent_if_content_is_null() {
         assertThrows(
                 NullPointerException.class,
-                () -> new Post("Title", null, "Category", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", null, "Category", emptyList(), getFixedInstant())
         );
     }
 
@@ -61,7 +68,7 @@ public class PostTest {
     void should_prevent_if_content_is_empty() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("Title", "", "Category", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", "", "Category", emptyList(), getFixedInstant())
         );
     }
 
@@ -69,13 +76,13 @@ public class PostTest {
     void should_prevent_if_content_is_blank() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("Title", "   ", "Category", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", "   ", "Category", emptyList(), getFixedInstant())
         );
     }
 
     @Test
     void should_trim_the_content() {
-        Post post = new Post("Title", "  Content  ", "Category", emptyList(), getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "  Content  ", "Category", emptyList(), getFixedInstant());
 
         assertEquals("Content", post.getContent());
     }
@@ -84,7 +91,7 @@ public class PostTest {
     void should_prevent_if_category_is_null() {
         assertThrows(
                 NullPointerException.class,
-                () -> new Post("Title", "Content", null, emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", "Content", null, emptyList(), getFixedInstant())
         );
     }
 
@@ -92,7 +99,7 @@ public class PostTest {
     void should_prevent_if_category_is_empty() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("Title", "Content", "", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", "Content", "", emptyList(), getFixedInstant())
         );
     }
 
@@ -100,14 +107,13 @@ public class PostTest {
     void should_prevent_if_category_is_blank() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("Title", "Content", "   ", emptyList(), getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", "Content", "   ", emptyList(), getFixedInstant())
         );
     }
 
     @Test
     void should_trim_the_category() {
-        Post post = new Post("  Title  ", "Content", "  Category  ", emptyList(), getFixedInstant(),
-                getFixedInstant());
+        Post post = new Post("  Title  ", "Content", "  Category  ", emptyList(), getFixedInstant());
 
         assertEquals("Category", post.getCategory());
     }
@@ -116,7 +122,7 @@ public class PostTest {
     void should_prevent_if_tags_list_is_null() {
         assertThrows(
                 NullPointerException.class,
-                () -> new Post("Title", "Content", "Category", null, getFixedInstant(), getFixedInstant())
+                () -> new Post("Title", "Content", "Category", null, getFixedInstant())
         );
     }
 
@@ -128,7 +134,7 @@ public class PostTest {
         tags.add("THIRD");
         tags.add(null);
 
-        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant());
 
         assertEquals(List.of("FIRST", "THIRD"), post.getTags());
     }
@@ -141,7 +147,7 @@ public class PostTest {
         tags.add("THIRD");
         tags.add("");
 
-        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant());
 
         assertEquals(List.of("FIRST", "THIRD"), post.getTags());
     }
@@ -154,7 +160,7 @@ public class PostTest {
         tags.add("THIRD");
         tags.add("  ");
 
-        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant());
 
         assertEquals(List.of("FIRST", "THIRD"), post.getTags());
     }
@@ -165,7 +171,7 @@ public class PostTest {
         tags.add(" first");
         tags.add("  thIRd  ");
 
-        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant());
 
         assertEquals(List.of("FIRST", "THIRD"), post.getTags());
     }
@@ -180,7 +186,7 @@ public class PostTest {
         tags.add("THIRD");
         tags.add("third");
 
-        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant());
 
         assertEquals(List.of("FIRST", "THIRD"), post.getTags());
     }
@@ -198,7 +204,7 @@ public class PostTest {
         tags.add("");
         tags.add("third");
 
-        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant(), getFixedInstant());
+        Post post = new Post("Title", "Content", "Category", tags, getFixedInstant());
 
         assertEquals(List.of("FIRST", "THIRD"), post.getTags());
     }
@@ -207,7 +213,7 @@ public class PostTest {
     void should_prevent_if_creation_time_is_null() {
         assertThrows(
                 NullPointerException.class,
-                () -> new Post("Title", "Content", "Category", emptyList(), null, getFixedInstant())
+                () -> new Post("Title", "Content", "Category", emptyList(), null)
         );
     }
 
@@ -215,7 +221,8 @@ public class PostTest {
     void should_prevent_if_update_time_is_null() {
         assertThrows(
                 NullPointerException.class,
-                () -> new Post("Title", "Content", "Category", emptyList(), getFixedInstant(), null)
+                () -> new Post(1, "Title", "Content", "Category", emptyList(), getFixedInstant(),
+                        null)
         );
     }
 
@@ -223,18 +230,17 @@ public class PostTest {
     void must_prevent_to_set_update_time_before_creation_time() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Post("Title", "Content", "Category", emptyList(), getFixedInstant(),
+                () -> new Post(1, "Title", "Content", "Category", emptyList(), getFixedInstant(),
                         getFixedInstant().minusSeconds(10))
         );
     }
 
     @Test
-    void should_be_able_to_set_id() {
-        Post post = new Post("Title", "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant());
+    void two_posts_should_not_be_equal_if_their_ids_are_different() {
+        Post firstPost = new Post(1, "Title", "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant());
+        Post secondPost = new Post(2,"Title", "Content", "Category", emptyList(), getFixedInstant(), getFixedInstant());
 
-        post.setId(1);
-
-        assertEquals(1, post.getId());
+        assertNotEquals(firstPost, secondPost);
     }
 
     @Test
@@ -281,37 +287,16 @@ public class PostTest {
 
     @Test
     void two_posts_should_not_be_equal_if_their_updated_times_are_different() {
-        Post firstPost = new Post("Title", "Content", "Category", emptyList(), getFixedInstant(),
+        Post firstPost = new Post(1, "Title", "Content", "Category", emptyList(), getFixedInstant(),
                 getFixedInstant().plusSeconds(30));
-        Post secondPost = new Post("Title", "Content", "Category", emptyList(), getFixedInstant(),
+        Post secondPost = new Post(1, "Title", "Content", "Category", emptyList(), getFixedInstant(),
                 getFixedInstant().plusSeconds(60));
 
         assertNotEquals(firstPost, secondPost);
     }
 
     @Test
-    void two_posts_should_be_equal_if_their_stats_are_equal_except_their_ids() {
-        Post firstPost = new Post("Title", "Content", "Category", emptyList(), getFixedInstant());
-        firstPost.setId(5);
-        Post secondPost = new Post("Title", "Content", "Category", emptyList(), getFixedInstant());
-        secondPost.setId(12);
-
-        assertEquals(firstPost, secondPost);
-    }
-
-    @Test
-    void two_posts_should_have_same_hash_code_if_their_stats_are_equal_except_their_ids() {
-        Post firstPost = new Post("Title", "Content", "Category", emptyList(), getFixedInstant());
-        firstPost.setId(5);
-        Post secondPost = new Post("Title", "Content", "Category", emptyList(), getFixedInstant());
-        secondPost.setId(12);
-
-        assertEquals(firstPost.hashCode(), secondPost.hashCode());
-    }
-
-    @Test
     void should_be_able_to_create_normally_with_the_first_constructor() {
-        long id = 1;
         String title = "Title";
         String content = "Content";
         String category = "Category";
@@ -319,9 +304,8 @@ public class PostTest {
         Instant createdAt = getFixedInstant();
 
         Post post = new Post(title, content, category, tags, createdAt);
-        post.setId(id);
 
-        assertEquals(post.getId(), id);
+        assertEquals(post.getId(), Post.UNSAVED_ID);
         assertEquals(post.getTitle(), title);
         assertEquals(post.getContent(), content);
         assertEquals(post.getCategory(), category);
@@ -340,8 +324,7 @@ public class PostTest {
         Instant createdAt = getFixedInstant();
         Instant updatedAt = getFixedInstant().plusSeconds(600);
 
-        Post post = new Post(title, content, category, tags, createdAt, updatedAt);
-        post.setId(id);
+        Post post = new Post(id, title, content, category, tags, createdAt, updatedAt);
 
         assertEquals(post.getId(), id);
         assertEquals(post.getTitle(), title);

@@ -39,7 +39,8 @@ public class PostServiceImpl implements PostService {
         validatePostRequest(postRequestDto);
 
         final Post existedPost = fetchPostFromDao(id);
-        final Post updatedPost = postDao.update(toEntity(postRequestDto, existedPost, now(clock)));
+        final Post updatedPost = postDao.update(toEntity(postRequestDto, existedPost, now(clock)))
+                .orElseThrow(PostNotFoundException::new);
 
         return toDto(updatedPost);
     }

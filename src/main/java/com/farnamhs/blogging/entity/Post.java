@@ -9,7 +9,9 @@ import static java.util.function.Predicate.not;
 
 public class Post {
 
-    private long id;
+    public static final long UNSAVED_ID = -1;
+
+    private final long id;
     private final String title;
     private final String content;
     private final String category;
@@ -18,10 +20,11 @@ public class Post {
     private final Instant updatedAt;
 
     public Post(String title, String content, String category, List<String> tags, Instant createdAt) {
-        this(title, content, category, tags, createdAt, createdAt);
+        this(UNSAVED_ID, title, content, category, tags, createdAt, createdAt);
     }
 
-    public Post(String title, String content, String category, List<String> tags, Instant createdAt, Instant updatedAt) {
+    public Post(long id, String title, String content, String category, List<String> tags, Instant createdAt, Instant updatedAt) {
+        this.id = id;
         this.title = validateTitle(title);
         this.content = validateContent(content);
         this.category = validateCategory(category);
@@ -33,10 +36,6 @@ public class Post {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -68,7 +67,8 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(title, post.title)
+        return id == post.id &&
+                Objects.equals(title, post.title)
                 && Objects.equals(content, post.content)
                 && Objects.equals(category, post.category)
                 && Objects.equals(tags, post.tags)
@@ -78,7 +78,7 @@ public class Post {
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, content, category, tags, createdAt, updatedAt);
+        return Objects.hash(id, title, content, category, tags, createdAt, updatedAt);
     }
 
     private String validateTitle(String title) {

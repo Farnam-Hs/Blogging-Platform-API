@@ -19,7 +19,8 @@ public class PostMapper {
     }
 
     public static Post toEntity(PostRequestDto postRequestDto, Post originalPost, Instant updatedAt) {
-        Post post = new Post(
+        return new Post(
+                originalPost.getId(),
                 postRequestDto.title(),
                 postRequestDto.content(),
                 postRequestDto.category(),
@@ -27,9 +28,6 @@ public class PostMapper {
                 originalPost.getCreatedAt(),
                 updatedAt
         );
-        post.setId(originalPost.getId());
-
-        return post;
     }
 
     public static PostResponseDto toDto(Post post) {

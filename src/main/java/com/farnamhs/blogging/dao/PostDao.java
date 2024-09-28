@@ -9,7 +9,7 @@ public interface PostDao {
 
     Post save(Post post);
 
-    Post update(Post post);
+    Optional<Post> update(Post post);
 
     boolean deleteById(long id);
 
