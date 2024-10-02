@@ -2,12 +2,13 @@ package com.farnamhs.blogging.dao;
 
 import com.farnamhs.blogging.entity.Post;
 import com.farnamhs.blogging.util.PropertiesReader;
+import org.flywaydb.core.Flyway;
+import org.h2.jdbcx.JdbcDataSource;
 import org.h2.tools.RunScript;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Clock;
 import java.time.Instant;
@@ -21,41 +22,41 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PostDaoImplTest {
 
+    private Clock fixedClock;
+
     private String url;
 
     private Connection connection;
-
-    private Clock fixedClock;
 
     private PostDaoImpl postDaoImpl;
 
     @BeforeAll
     void beforeAll() throws IOException, SQLException, ClassNotFoundException {
+        fixedClock = Clock.fixed(Instant.parse("2024-09-29T17:47:25Z"), ZoneId.systemDefault());
         PropertiesReader reader = new PropertiesReader("test-database.properties");
         url = reader.getProperty("url");
+        JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setURL(url);
         Class.forName(reader.getProperty("driver"));
-        connection = DriverManager.getConnection(url);
-        InputStreamReader schemaInputStreamReader = getInputStreamReader("schema.sql");
-        RunScript.execute(connection, schemaInputStreamReader);
-        schemaInputStreamReader.close();
-        fixedClock = Clock.fixed(Instant.parse("2024-09-29T17:47:25Z"), ZoneId.systemDefault());
+        connection = dataSource.getConnection();
+        Flyway flyway = Flyway.configure()
+                .dataSource(dataSource)
+                .load();
+        flyway.migrate();
     }
 
     @BeforeEach
     void setUp() throws IOException, SQLException {
-        InputStreamReader dataInputStreamReader = getInputStreamReader("data.sql");
+        InputStreamReader dataInputStreamReader = new InputStreamReader(
+                Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("data.sql")));
         RunScript.execute(connection, dataInputStreamReader);
         dataInputStreamReader.close();
-        this.postDaoImpl = new PostDaoImpl(url);
+        postDaoImpl = new PostDaoImpl(url);
     }
 
     @AfterAll
     void afterAll() throws SQLException {
         connection.close();
-    }
-
-    private InputStreamReader getInputStreamReader(String fileName) {
-        return new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(fileName)));
     }
 
     @Test
