@@ -1,8 +1,9 @@
-package com.farnamhs.blogging.mapper;
+package com.farnamhs.blogging.unit.mapper;
 
 import com.farnamhs.blogging.dto.PostRequestDto;
 import com.farnamhs.blogging.dto.PostResponseDto;
 import com.farnamhs.blogging.entity.Post;
+import com.farnamhs.blogging.mapper.PostMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

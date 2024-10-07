@@ -1,5 +1,6 @@
-package com.farnamhs.blogging.entity;
+package com.farnamhs.blogging.unit.entity;
 
+import com.farnamhs.blogging.entity.Post;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

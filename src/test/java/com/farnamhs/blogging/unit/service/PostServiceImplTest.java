@@ -1,11 +1,13 @@
-package com.farnamhs.blogging.service;
+package com.farnamhs.blogging.unit.service;
 
 import com.farnamhs.blogging.dao.PostDao;
 import com.farnamhs.blogging.dto.PostRequestDto;
 import com.farnamhs.blogging.dto.PostResponseDto;
 import com.farnamhs.blogging.entity.Post;
 import com.farnamhs.blogging.exception.PostNotFoundException;
+import com.farnamhs.blogging.service.PostServiceImpl;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,19 +22,20 @@ import static org.mockito.Mockito.*;
 
 public class PostServiceImplTest {
 
-    private final Clock fixedClock;
+    private static Clock fixedClock;
 
-    private PostDao postDao;
+    private static PostDao postDao;
 
     private PostServiceImpl postServiceImpl;
 
-    private PostServiceImplTest() {
+    @BeforeAll
+    static void beforeAll() {
+        postDao = mock(PostDao.class);
         fixedClock = Clock.fixed(Instant.parse("2024-09-21T12:50:00Z"), ZoneId.systemDefault());
     }
 
     @BeforeEach
     void setUp() {
-        postDao = mock(PostDao.class);
         postServiceImpl = new PostServiceImpl(fixedClock, postDao);
     }
 

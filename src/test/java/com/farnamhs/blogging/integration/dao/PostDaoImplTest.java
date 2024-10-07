@@ -1,5 +1,6 @@
-package com.farnamhs.blogging.dao;
+package com.farnamhs.blogging.integration.dao;
 
+import com.farnamhs.blogging.dao.PostDaoImpl;
 import com.farnamhs.blogging.entity.Post;
 import com.farnamhs.blogging.util.PropertiesReader;
 import org.flywaydb.core.Flyway;
@@ -39,10 +40,10 @@ public class PostDaoImplTest {
         dataSource.setURL(url);
         Class.forName(reader.getProperty("driver"));
         connection = dataSource.getConnection();
-        Flyway flyway = Flyway.configure()
+        Flyway.configure()
                 .dataSource(dataSource)
-                .load();
-        flyway.migrate();
+                .load()
+                .migrate();
     }
 
     @BeforeEach
