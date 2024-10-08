@@ -1,9 +1,9 @@
 package com.farnamhs.blogging.integration.dao;
 
+import com.farnamhs.blogging.config.DatabaseInitializer;
 import com.farnamhs.blogging.dao.PostDaoImpl;
 import com.farnamhs.blogging.entity.Post;
 import com.farnamhs.blogging.util.PropertiesReader;
-import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.tools.RunScript;
 import org.junit.jupiter.api.*;
@@ -38,12 +38,8 @@ public class PostDaoImplTest {
         url = reader.getProperty("url");
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL(url);
-        Class.forName(reader.getProperty("driver"));
         connection = dataSource.getConnection();
-        Flyway.configure()
-                .dataSource(dataSource)
-                .load()
-                .migrate();
+        DatabaseInitializer.initialize(reader);
     }
 
     @BeforeEach
