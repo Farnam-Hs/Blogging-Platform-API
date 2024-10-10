@@ -128,7 +128,7 @@ src/
         ```
     - ```404 Not Found```  if the blog post was not found.
 
-### GET ``/api/posts?search={term}``
+### GET ``/api/posts?term={term}``
 - **Description:** Search posts by title, content, or category.
 - **Response:**
   - ``200 OK`` with a list of matching posts or all posts if no term is provided.
